@@ -24,3 +24,11 @@ typedef GUu64 GUumax;
 #else
 typedef GUu32 GUumax;
 #endif
+
+//boolean
+typedef GUu8 GUboo;
+
+//default dat itms
+#define GEnull ((void*)0)
+#define GEfalse 0
+#define GEtrue  1

@@ -98,7 +98,7 @@ cat $TMP/tab/src/tab.n $TMP/lst/src/lst.n $TMP/dlt/src/dlt.n > $TMP/commonStc.n
 
 #gather main core src also
 echo $archDef > $TMP/core.n
-cat $SRC/rootTypes.n \
+cat $SRC/roots.n \
 	$SRC/lle.n \
 	$SRC/exit.n \
 >> $TMP/core.n
