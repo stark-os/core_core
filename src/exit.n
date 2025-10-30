@@ -1,0 +1,24 @@
+// ---------------- DEFINITIONS ----------------
+
+//exit
+#define EXIT__SUCCESS               0
+#define EXIT__FAILURE               1
+#define EXIT__SHELL_BUILTIN         2
+#define EXIT__EXECUTION_DENIED    126
+#define EXIT__CMD_NOT_FOUND       127
+#define EXIT__INVALID_EXIT_CODE   128
+#define EXIT__SIGINT              130
+#define EXIT__SIGKILL             137
+#define EXIT__SEG_FAULT           139
+#define EXIT__SIGTERM             143
+#define EXIT__SYSTEM_REFUSE_ALLOC 144 //allocator related
+#define EXIT__SYSTEM_REFUSE_FREE  145 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU8    146 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU16   147 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU32   148 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU64   149 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU8    150 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU16   151 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU32   152 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU64   153 //allocator related
+#define EXIT__EXIT_OUT_OF_RANGE   255

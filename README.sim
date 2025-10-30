@@ -1,0 +1,142 @@
+t0c Core Stark libraries
+
+l Core libraries for compiling everything the Stark way.
+
+b
+b
+
+
+
+
+t1 Overview
+
+p These libraries are meant to be \beasy to use\b as much as \
+possible. They are the main \ucore\u development tools required \
+to build Stark OS from scratch.
+
+
+
+
+t1 Compatibility
+
+t2 Target
+
+l Here is all the requirement to \buse\b these libraries:
+- Linux based OS
+-
+
+
+t2 Build requirements
+
+l Here is all the requirement to \bbuild\b these libraries:
+- Linux based OS
+-
+- git CLI
+-
+- N to ASM compiler
+Available at \lhttps://github.com/stark-os/dev/core/n-to-asm/-apps/latest/\l\l
+-
+- N to ASM compiler
+Available at \lhttps://github.com/stark-os/dev/core/n-to-asm/-apps/latest/\l\l
+-
+- N to ASM compiler
+Available at \lhttps://github.com/stark-os/dev/core/n-to-asm/-apps/latest/\l\l
+-
+l Paths of the required compilers must be set in \mbld/build\m.
+
+
+
+
+t1 Use
+
+t2 Install
+
+p If you have downloaded the package, you will have to extract it \
+completely to see 4 files: \mcore.n\m, \mcore.asm\m, \mcore.fp\m and \
+\mcore.sdl\m. These are your ready-to-use core files so make sure to \
+keep them somewhere appropriate as long as you want to compile or \
+execute stark-related stuff.
+
+p The directory in which you will keep these core resources is called \
+a \bLow-Level Interface\b (LLI). You may need to add its location to \
+your compiler(s) configuration so that they can now use it and so, \
+compile freely using this basis.
+
+p Although you can compile, you may not be able to run your code for \
+the moment (linking error). Indeed, these core libraries are made of \
+raw code that will be added to yours (\mcore.n\m, \mcore.asm\m), but \
+also of some external content that needs to be loaded at runtime \
+(\mcore.sdl\m).
+
+p There are several ways to make your \mcore.sdl\m accessible at \
+runtime, check out \lhttps://stark-os.org/doc/dev/SDL/use.sim\lthis documentation page\l \
+to choose the best one that can fit for you.
+
+l \uNote for Stark OS hosts:\u
+p Because core libraries are a requirement for almost everything in \
+Stark OS, I recommend you to set it in \m/sdl\m so that every \
+application can access it regardless on their environment.
+
+l Core libraries are successfully installed then.
+
+
+t2 Usage
+
+p No usage in itself. It acts as a dependency. \
+The way it is going to be used depends on the programs requirering it.
+
+
+t2 Uninstall
+
+p To uninstall, you only have to remove the core LLI directory you \
+made when installing, and potentially, if you moved \mcore.sdl\m \
+somewhere else, you can also remove it.
+
+l Core libraries are successfully uninstalled.
+
+
+
+
+t1 Build process
+
+l To build the libraries yourself, simply run:
+" bash
+bld/build <arch>
+"
+l Parameter \march\m must be one of the following:
+- arm
+-
+- arm64
+-
+- x86
+-
+- x86_64
+-
+
+p The resulting files generated are in the \mout/\m directory. \
+You may find more than what is inside the downloadable package file. \
+However, you should not have anything missing.
+
+l Also, these libraries can be built directly under the ready-to-use \
+stark package format (same as downloadable resources):
+" bash
+bld/build-pkg
+"
+l The resulting package is also in the \mout\m directory.
+
+
+
+b
+
+l This is it for these libraries,
+
+l Remember, this is FREE SOFTWARE: Please respect the work done.
+
+l Enjoy !
+
+b
+b
+
+l \iContact: \lhttps://github.com/stark-os\l\l\i
+
+l Let's Code !\arBy I.A.

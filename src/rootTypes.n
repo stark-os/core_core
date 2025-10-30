@@ -1,0 +1,26 @@
+//unsigned integers
+typedef unsigned char  GUu8;
+typedef unsigned short GUu16;
+typedef unsigned int   GUu32;
+#ifdef ARCH64
+typedef unsigned long  GUu64;
+#endif
+
+//signed integers
+typedef signed char  GUs8;
+typedef signed short GUs16;
+typedef signed int   GUs32;
+typedef signed long  GUs64;
+
+//floating points
+typedef float  GUf32;
+#ifdef ARCH64
+typedef double GUf64;
+#endif
+
+//maximum type size (considered unsigned integer)
+#ifdef ARCH64
+typedef GUu64 GUumax;
+#else
+typedef GUu32 GUumax;
+#endif

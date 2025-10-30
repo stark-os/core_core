@@ -1,0 +1,141 @@
+#!/bin/bash
+
+
+
+
+# -------- DEFINITIONS --------
+
+#exit on err
+set -e
+
+#current executable directory
+CXD=$(dirname $(readlink -f $0))
+pCXD=$(dirname $CXD)
+
+#compilers (if not accessible everywhere as command, set absolute path)
+N_TO_ASM='../n-to-asm/app/n-to-asm'
+ASM_TO_OBJ='../asm-to-obj/app/asm-to-obj'
+OBJ_TO_ELF='../obj-to-elf/app/obj-to-elf'
+
+#dependencies
+SYSCALLS_REPO_URL='https://github.com/stark-os/dev_core_syscalls'
+OPERATORS_REPO_URL='https://github.com/stark-os/dev_core_operators'
+HEAP_REPO_URL='https://github.com/stark-os/dev_core_heap'
+TAB_REPO_URL='https://github.com/stark-os/dev_core_tab'
+LST_REPO_URL='https://github.com/stark-os/dev_core_lst'
+DLT_REPO_URL='https://github.com/stark-os/dev_core_dlt'
+
+#dirs
+SRC=$pCXD/src
+OUT=$pCXD/out
+OSRC=$OUT/src
+TMP=$OUT/tmp
+
+
+
+
+
+
+# -------- PREPARATIONS --------
+
+#clean
+$CXD/clean
+
+#remove previous blds
+rm --force $OUT/core.n $OUT/core.asm $OUT/core.sdl $OUT/libcore.so $OUT/core.cfg
+
+#tmp dir
+[[ ! -d $TMP ]] && mkdir --parents $TMP
+
+
+
+
+
+
+# -------- EXECUTION --------
+
+# STEP 1: ARGS
+
+#arch given as 1st param
+if [[ -z $1 ]]; then
+	echo "build: Missing <arch> as 1st argument." >&2
+	exit 1
+fi
+
+#args
+arch=$1
+archType='32'
+archDef=''
+case $arch in
+	'arm'  |'x86'   )                                        ;; #valid arch
+	'arm64'|'x86_64') archType='64'; archDef="#define ARCH64";;
+
+	#invalid
+	*)
+		echo "build: Invalid <arch> given '$arch'." >&2
+		exit 1
+	;;
+esac
+
+
+
+# STEP 2: PREPARE DEPENDENCIES
+
+#clone dependencies
+git clone $SYSCALLS_REPO_URL  $TMP/syscalls  --quiet
+git clone $OPERATORS_REPO_URL $TMP/operators --quiet
+git clone $HEAP_REPO_URL      $TMP/heap      --quiet
+git clone $TAB_REPO_URL       $TMP/tab       --quiet
+git clone $LST_REPO_URL       $TMP/lst       --quiet
+git clone $DLT_REPO_URL       $TMP/dlt       --quiet
+
+#build them all
+$TMP/syscalls/bld/build  $arch
+$TMP/operators/bld/build $archType
+
+#gather common stcs (make shorter cmd)
+cat $TMP/tab/src/tab.n $TMP/lst/src/lst.n $TMP/dlt/src/dlt.n > $TMP/commonStc.n
+
+#gather main core src also
+echo $archDef > $TMP/core.n
+cat $SRC/rootTypes.n \
+	$SRC/lle.n \
+	$SRC/exit.n \
+>> $TMP/core.n
+
+
+
+# STEP 3: SDL COMPILATION
+
+#compile all
+  $N_TO_ASM       $TMP/core.n,$TMP/heap/src/heap.n,$TMP/commonStc.n --output $TMP/core.asm
+$ASM_TO_OBJ       $TMP/core.asm --output $TMP/core.obj
+$OBJ_TO_ELF --sdl $TMP/core.obj --output $OUT/core.sdl
+
+
+
+# STEP 4: SRC-ONLY GATHERING
+
+#gather core src
+cat $TMP/syscalls/out/src/syscalls.asm > $OUT/core.asm
+cat $TMP/operators/out/src/operators.n > $OUT/core.n
+
+
+
+# STEP 5: COMPLETE SDL FINGER PRINT
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GEN MANUALLY SDL FP FOR THE MOMENT
+cat $TMP/heap/src/heap.sdl.cfg \
+	$TMP/tab/src/tab.sdl.cfg \
+	$TMP/lst/src/lst.sdl.cfg \
+	$TMP/dlt/src/dlt.sdl.cfg \
+> $OUT/core.sdl.cfg
+
+#add core src fp for higher-level compilations
+cat $TMP/syscalls/out/src/syscalls.asm.cfg \
+	$TMP/operators/out/src/operators.n.cfg \
+>> $OUT/core.sdl.cfg
+
+#also rename it without "sdl" notation,
+# it is no longer SPECIFIC to core.sdl only, but also contains additionnal stuff
+mv $OUT/core.sdl.cfg $OUT/core.cfg

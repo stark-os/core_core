@@ -1,0 +1,38 @@
+// ---------------- DEFINITIONS ----------------
+
+//toggle LLE feature
+#define LLE__ENABLED
+
+
+
+//enabled
+#ifdef LLE__ENABLED
+
+	//err codes
+	#define LLE__SUCCESS       0
+	#define LLE__FAILURE       1
+	#define LLE__OUT_OF_BOUNDS 2
+
+	//lle
+	GUu8 GElle = LLE__SUCCESS;
+
+	//shortcuts
+	#define LLE__SCC GElle=LLE__SUCCESS;
+	#define LLE__FAI GElle=LLE__FAILURE;
+	#define LLE__OOB GElle=LLE__OUT_OF_BOUNDS;
+
+
+
+//disabled
+#else
+
+	//err codes (empty)
+	#define LLE__SUCCESS       
+	#define LLE__FAILURE       
+	#define LLE__OUT_OF_BOUNDS 
+
+	//shortcuts (empty)
+	#define LLE__SCC 
+	#define LLE__FAI 
+	#define LLE__OOB 
+#endif
