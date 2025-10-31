@@ -17,14 +17,6 @@ N_TO_ASM='../n-to-asm/app/n-to-asm'
 ASM_TO_OBJ='../asm-to-obj/app/asm-to-obj'
 OBJ_TO_ELF='../obj-to-elf/app/obj-to-elf'
 
-#dependencies
-SYSCALLS_REPO_URL='https://github.com/stark-os/dev_core_syscalls'
-OPERATORS_REPO_URL='https://github.com/stark-os/dev_core_operators'
-HEAP_REPO_URL='https://github.com/stark-os/dev_core_heap'
-TAB_REPO_URL='https://github.com/stark-os/dev_core_tab'
-LST_REPO_URL='https://github.com/stark-os/dev_core_lst'
-DLT_REPO_URL='https://github.com/stark-os/dev_core_dlt'
-
 #dirs
 SRC=$pCXD/src
 OUT=$pCXD/out
@@ -81,23 +73,15 @@ esac
 
 # STEP 2: PREPARE DEPENDENCIES
 
-#clone dependencies
-git clone $SYSCALLS_REPO_URL  $TMP/syscalls  --quiet
-git clone $OPERATORS_REPO_URL $TMP/operators --quiet
-git clone $HEAP_REPO_URL      $TMP/heap      --quiet
-git clone $TAB_REPO_URL       $TMP/tab       --quiet
-git clone $LST_REPO_URL       $TMP/lst       --quiet
-git clone $DLT_REPO_URL       $TMP/dlt       --quiet
-
-#build them all
-$TMP/syscalls/bld/build  $arch
-$TMP/operators/bld/build $archType
+#build dependencies
+$SRC/syscalls/bld/build  $arch
+$SRC/operators/bld/build $archType
 
 #gather common stcs (make shorter cmd)
-cat $TMP/tab/src/tab.n $TMP/lst/src/lst.n $TMP/dlt/src/dlt.n > $TMP/commonStc.n
+cat $SRC/tab/src/tab.n $SRC/lst/src/lst.n $SRC/dlt/src/dlt.n > $TMP/commonStc.n
 
 #same thing for memory related stuff
-cat $TMP/heap/src/mem.n $TMP/heap/src/heap.n > $TMP/mm.n
+cat $SRC/heap/src/mem.n $SRC/heap/src/heap.n > $TMP/mm.n
 
 #gather main core src also
 echo $archDef > $TMP/core.n
@@ -120,25 +104,25 @@ $OBJ_TO_ELF --pic --sdl $TMP/core.obj --output $OUT/core.sdl
 # STEP 4: SRC-ONLY GATHERING
 
 #gather core src
-cat $TMP/syscalls/out/src/syscalls.asm > $OUT/core.asm
-cat $TMP/operators/out/src/operators.n > $OUT/core.n
+cat $SRC/syscalls/out/src/syscalls.asm > $OUT/core.asm
+cat $SRC/operators/out/src/operators.n > $OUT/core.n
 
 
 
 # STEP 5: COMPLETE SDL FINGER PRINT
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GEN MANUALLY SDL FP FOR THE MOMENT
-cat $pCXD/src/core.sdl.cfg.tmp \
-	$TMP/heap/src/mem.sdl.cfg.tmp \
-	$TMP/heap/src/heap.sdl.cfg.tmp \
-	$TMP/tab/src/tab.sdl.cfg.tmp \
-	$TMP/lst/src/lst.sdl.cfg.tmp \
-	$TMP/dlt/src/dlt.sdl.cfg.tmp \
+cat $SRC/core.sdl.cfg.tmp \
+	$SRC/heap/src/mem.sdl.cfg.tmp \
+	$SRC/heap/src/heap.sdl.cfg.tmp \
+	$SRC/tab/src/tab.sdl.cfg.tmp \
+	$SRC/lst/src/lst.sdl.cfg.tmp \
+	$SRC/dlt/src/dlt.sdl.cfg.tmp \
 > $OUT/core.sdl.cfg
 
 #add core src fp for higher-level compilations
-cat $TMP/syscalls/out/src/syscalls.asm.cfg \
-	$TMP/operators/out/src/operators.n.cfg \
+cat $SRC/syscalls/out/src/syscalls.asm.cfg \
+	$SRC/operators/out/src/operators.n.cfg \
 >> $OUT/core.sdl.cfg
 
 #also rename it without "sdl" notation,
