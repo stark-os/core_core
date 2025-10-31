@@ -32,8 +32,3 @@ typedef GUu8 GUboo;
 #define GEnull ((void*)0)
 #define GEfalse 0
 #define GEtrue  1
-
-//default IO
-#define STDIN  0
-#define STDOUT 1
-#define STDERR 2

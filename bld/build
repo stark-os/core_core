@@ -96,6 +96,9 @@ $TMP/operators/bld/build $archType
 #gather common stcs (make shorter cmd)
 cat $TMP/tab/src/tab.n $TMP/lst/src/lst.n $TMP/dlt/src/dlt.n > $TMP/commonStc.n
 
+#same thing for memory related stuff
+cat $TMP/heap/src/mem.n $TMP/heap/src/heap.n > $TMP/mm.n
+
 #gather main core src also
 echo $archDef > $TMP/core.n
 cat $SRC/roots.n \
@@ -108,9 +111,9 @@ cat $SRC/roots.n \
 # STEP 3: SDL COMPILATION
 
 #compile all
-  $N_TO_ASM       $TMP/core.n,$TMP/heap/src/heap.n,$TMP/commonStc.n --output $TMP/core.asm
-$ASM_TO_OBJ       $TMP/core.asm --output $TMP/core.obj
-$OBJ_TO_ELF --sdl $TMP/core.obj --output $OUT/core.sdl
+  $N_TO_ASM --pic       $TMP/core.n,$TMP/mm.n,$TMP/commonStc.n --output $TMP/core.asm
+$ASM_TO_OBJ --pic       $TMP/core.asm --output $TMP/core.obj
+$OBJ_TO_ELF --pic --sdl $TMP/core.obj --output $OUT/core.sdl
 
 
 
@@ -125,10 +128,12 @@ cat $TMP/operators/out/src/operators.n > $OUT/core.n
 # STEP 5: COMPLETE SDL FINGER PRINT
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GEN MANUALLY SDL FP FOR THE MOMENT
-cat $TMP/heap/src/heap.sdl.cfg \
-	$TMP/tab/src/tab.sdl.cfg \
-	$TMP/lst/src/lst.sdl.cfg \
-	$TMP/dlt/src/dlt.sdl.cfg \
+cat $pCXD/src/core.sdl.cfg.tmp \
+	$TMP/heap/src/mem.sdl.cfg.tmp \
+	$TMP/heap/src/heap.sdl.cfg.tmp \
+	$TMP/tab/src/tab.sdl.cfg.tmp \
+	$TMP/lst/src/lst.sdl.cfg.tmp \
+	$TMP/dlt/src/dlt.sdl.cfg.tmp \
 > $OUT/core.sdl.cfg
 
 #add core src fp for higher-level compilations
