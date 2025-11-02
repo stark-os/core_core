@@ -1,0 +1,4 @@
+tGUraw		s,0,GUumax,len
+dGEnull		ref
+dGEfalse	GUboo
+dGEtrue		GUboo

@@ -1,0 +1,68 @@
+typedef unsigned char  GUu8;
+typedef unsigned short GUu16;
+typedef unsigned int   GUu32;
+#ifdef ARCH64
+typedef unsigned long  GUu64;
+#endif
+typedef signed char  GUs8;
+typedef signed short GUs16;
+typedef signed int   GUs32;
+typedef signed long  GUs64;
+typedef float  GUf32;
+#ifdef ARCH64
+typedef double GUf64;
+#endif
+#ifdef ARCH64
+typedef GUu64 GUumax;
+#else
+typedef GUu32 GUumax;
+#endif
+typedef GUu8 GUboo;
+#define GEnull ((void*)0)
+#define GEfalse 0
+#define GEtrue  1
+#define STDIN  0
+#define STDOUT 1
+#define STDERR 2
+#define LLE__ENABLED
+#ifdef LLE__ENABLED
+	#define LLE__SUCCESS       0
+	#define LLE__FAILURE       1
+	#define LLE__OUT_OF_BOUNDS 2
+	GUu8 GElle = LLE__SUCCESS;
+	#define LLE__SCC GElle=LLE__SUCCESS;
+	#define LLE__FAI GElle=LLE__FAILURE;
+	#define LLE__OOB GElle=LLE__OUT_OF_BOUNDS;
+#else
+	#define LLE__SUCCESS       
+	#define LLE__FAILURE       
+	#define LLE__OUT_OF_BOUNDS 
+	#define LLE__SCC 
+	#define LLE__FAI 
+	#define LLE__OOB 
+#endif
+#define EXIT__SUCCESS               0
+#define EXIT__FAILURE               1
+#define EXIT__SHELL_BUILTIN         2
+#define EXIT__EXECUTION_DENIED    126
+#define EXIT__CMD_NOT_FOUND       127
+#define EXIT__INVALID_EXIT_CODE   128
+#define EXIT__SIGINT              130
+#define EXIT__SIGKILL             137
+#define EXIT__SEG_FAULT           139
+#define EXIT__SIGTERM             143
+#define EXIT__SYSTEM_REFUSE_ALLOC 144 //allocator related
+#define EXIT__SYSTEM_REFUSE_FREE  145 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU8    146 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU16   147 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU32   148 //allocator related
+#define EXIT__ILLEGAL_HEAP_RU64   149 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU8    150 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU16   151 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU32   152 //allocator related
+#define EXIT__ILLEGAL_HEAP_WU64   153 //allocator related
+#define EXIT__EXIT_OUT_OF_RANGE   255
+typedef struct {
+	GUumax len;
+	ref    dat;
+} raw;

@@ -1,0 +1,5 @@
+//structure
+typedef struct {
+	GUumax len;
+	ref    dat;
+} raw;

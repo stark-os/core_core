@@ -13,9 +13,9 @@ CXD=$(dirname $(readlink -f $0))
 pCXD=$(dirname $CXD)
 
 #compilers (if not accessible everywhere as command, set absolute path)
-N_TO_ASM='../n-to-asm/app/n-to-asm'
-ASM_TO_OBJ='../asm-to-obj/app/asm-to-obj'
-OBJ_TO_ELF='../obj-to-elf/app/obj-to-elf'
+N_TO_ASM='../../dev/core/n-to-asm/app/n-to-asm'
+ASM_TO_OBJ='../../dev/core/asm-to-obj/app/asm-to-obj'
+OBJ_TO_ELF='../../dev/core/obj-to-elf/app/obj-to-elf'
 
 #dirs
 SRC=$pCXD/src
@@ -112,19 +112,23 @@ cat $SRC/operators/out/src/operators.n > $OUT/core.n
 # STEP 5: COMPLETE SDL FINGER PRINT
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GEN MANUALLY SDL FP FOR THE MOMENT
-cat $SRC/core.sdl.cfg.tmp \
-	$SRC/heap/src/mem.sdl.cfg.tmp \
-	$SRC/heap/src/heap.sdl.cfg.tmp \
-	$SRC/tab/src/tab.sdl.cfg.tmp \
-	$SRC/lst/src/lst.sdl.cfg.tmp \
-	$SRC/dlt/src/dlt.sdl.cfg.tmp \
-> $OUT/core.sdl.cfg
-
-#add core src fp for higher-level compilations
-cat $SRC/syscalls/out/src/syscalls.asm.cfg \
-	$SRC/operators/out/src/operators.n.cfg \
->> $OUT/core.sdl.cfg
+cat $SRC/core.sdl.cfg.TMP_FOR_LLI_CPL \
+	$SRC/syscalls/src/syscalls.asm.cfg.TMP_FOR_LLI_CPL \
+	$SRC/operators/out/src/operators.n.cfg.TMP_FOR_LLI_CPL \
+	$SRC/heap/src/mem.sdl.cfg.TMP_FOR_LLI_CPL \
+	$SRC/heap/src/heap.sdl.cfg.TMP_FOR_LLI_CPL \
+	$SRC/tab/src/tab.sdl.cfg.TMP_FOR_LLI_CPL \
+	$SRC/lst/src/lst.sdl.cfg.TMP_FOR_LLI_CPL \
+	$SRC/dlt/src/dlt.sdl.cfg.TMP_FOR_LLI_CPL \
+> $OUT/core.sdl.cfg.TMP_FOR_LLI_CPL
+cat $SRC/core.sdl.cfg.TMP_FOR_Z_CPL \
+	$SRC/syscalls/src/syscalls.asm.cfg.TMP_FOR_Z_CPL \
+	$SRC/operators/out/src/operators.n.cfg.TMP_FOR_Z_CPL \
+	$SRC/tab/src/tab.sdl.cfg.TMP_FOR_Z_CPL \
+	$SRC/lst/src/lst.sdl.cfg.TMP_FOR_Z_CPL \
+	$SRC/dlt/src/dlt.sdl.cfg.TMP_FOR_Z_CPL \
+> $OUT/core.sdl.cfg.TMP_FOR_Z_CPL
 
 #also rename it without "sdl" notation,
 # it is no longer SPECIFIC to core.sdl only, but also contains additionnal stuff
-mv $OUT/core.sdl.cfg $OUT/core.cfg
+#mv $OUT/core.sdl.cfg $OUT/core.cfg
