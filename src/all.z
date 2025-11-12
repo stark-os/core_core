@@ -1,0 +1,16 @@
+//stdz (operators)
+#{stdz_common}
+#{stdz_prm}
+
+//core
+imp roots
+imp lle
+imp exit
+
+//memory management
+imp heap/src/heap
+
+//common data structures
+imp tab/src/tab
+imp lst/src/lst
+//imp dlt/src/dlt <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< disabled for the moment

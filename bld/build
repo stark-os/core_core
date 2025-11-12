@@ -13,14 +13,11 @@ CXD=$(dirname $(readlink -f $0))
 pCXD=$(dirname $CXD)
 
 #compilers (if not accessible everywhere as command, set absolute path)
-N_TO_ASM='../../dev/core/n-to-asm/app/n-to-asm'
-ASM_TO_OBJ='../../dev/core/asm-to-obj/app/asm-to-obj'
-OBJ_TO_ELF='../../dev/core/obj-to-elf/app/obj-to-elf'
+Z_TO_N='/a/zinc-lite/app/zinc'
 
 #dirs
 SRC=$pCXD/src
 OUT=$pCXD/out
-OSRC=$OUT/src
 TMP=$OUT/tmp
 
 
@@ -34,7 +31,7 @@ TMP=$OUT/tmp
 $CXD/clean
 
 #remove previous blds
-rm --force $OUT/core.n $OUT/core.asm $OUT/core.sdl $OUT/libcore.so $OUT/core.cfg
+rm --force $OUT/core.n $OUT/core.cfg.TMP_FOR_Z_CPL $OUT/core.cfg.TMP_FOR_LLI_CPL
 
 #tmp dir
 [[ ! -d $TMP ]] && mkdir --parents $TMP
@@ -46,89 +43,5 @@ rm --force $OUT/core.n $OUT/core.asm $OUT/core.sdl $OUT/libcore.so $OUT/core.cfg
 
 # -------- EXECUTION --------
 
-# STEP 1: ARGS
-
-#arch given as 1st param
-if [[ -z $1 ]]; then
-	echo "build: Missing <arch> as 1st argument." >&2
-	exit 1
-fi
-
-#args
-arch=$1
-archType='32'
-archDef=''
-case $arch in
-	'arm'  |'x86'   )                                        ;; #valid arch
-	'arm64'|'x86_64') archType='64'; archDef="#define ARCH64";;
-
-	#invalid
-	*)
-		echo "build: Invalid <arch> given '$arch'." >&2
-		exit 1
-	;;
-esac
-
-
-
-# STEP 2: PREPARE DEPENDENCIES
-
-#build dependencies
-$SRC/syscalls/bld/build  $arch
-$SRC/operators/bld/build $archType
-
-#gather common stcs (make shorter cmd)
-cat $SRC/tab/src/tab.n $SRC/lst/src/lst.n $SRC/dlt/src/dlt.n > $TMP/commonStc.n
-
-#same thing for memory related stuff
-cat $SRC/heap/src/mem.n $SRC/heap/src/heap.n > $TMP/mm.n
-
-#gather main core src also
-echo $archDef > $TMP/core.n
-cat $SRC/roots.n \
-	$SRC/lle.n \
-	$SRC/exit.n \
->> $TMP/core.n
-
-
-
-# STEP 3: SDL COMPILATION
-
-#compile all
-  $N_TO_ASM --pic       $TMP/core.n,$TMP/mm.n,$TMP/commonStc.n --output $TMP/core.asm
-$ASM_TO_OBJ --pic       $TMP/core.asm --output $TMP/core.obj
-$OBJ_TO_ELF --pic --sdl $TMP/core.obj --output $OUT/core.sdl
-
-
-
-# STEP 4: SRC-ONLY GATHERING
-
-#gather core src
-cat $SRC/syscalls/out/src/syscalls.asm > $OUT/core.asm
-cat $SRC/operators/out/src/operators.n > $OUT/core.n
-
-
-
-# STEP 5: COMPLETE SDL FINGER PRINT
-
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GEN MANUALLY SDL FP FOR THE MOMENT
-cat $SRC/core.sdl.cfg.TMP_FOR_LLI_CPL \
-	$SRC/syscalls/src/syscalls.asm.cfg.TMP_FOR_LLI_CPL \
-	$SRC/operators/out/src/operators.n.cfg.TMP_FOR_LLI_CPL \
-	$SRC/heap/src/mem.sdl.cfg.TMP_FOR_LLI_CPL \
-	$SRC/heap/src/heap.sdl.cfg.TMP_FOR_LLI_CPL \
-	$SRC/tab/src/tab.sdl.cfg.TMP_FOR_LLI_CPL \
-	$SRC/lst/src/lst.sdl.cfg.TMP_FOR_LLI_CPL \
-	$SRC/dlt/src/dlt.sdl.cfg.TMP_FOR_LLI_CPL \
-> $OUT/core.sdl.cfg.TMP_FOR_LLI_CPL
-cat $SRC/core.sdl.cfg.TMP_FOR_Z_CPL \
-	$SRC/syscalls/src/syscalls.asm.cfg.TMP_FOR_Z_CPL \
-	$SRC/operators/out/src/operators.n.cfg.TMP_FOR_Z_CPL \
-	$SRC/tab/src/tab.sdl.cfg.TMP_FOR_Z_CPL \
-	$SRC/lst/src/lst.sdl.cfg.TMP_FOR_Z_CPL \
-	$SRC/dlt/src/dlt.sdl.cfg.TMP_FOR_Z_CPL \
-> $OUT/core.sdl.cfg.TMP_FOR_Z_CPL
-
-#also rename it without "sdl" notation,
-# it is no longer SPECIFIC to core.sdl only, but also contains additionnal stuff
-#mv $OUT/core.sdl.cfg $OUT/core.cfg
+#build
+$Z_TO_N $SRC/all.z

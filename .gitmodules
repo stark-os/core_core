@@ -7,12 +7,6 @@
 [submodule "src/lst"]
 	path = src/lst
 	url = git@github.com:stark-os/dev_core_lst
-[submodule "src/syscalls"]
-	path = src/syscalls
-	url = git@github.com:stark-os/dev_core_syscalls
-[submodule "src/operators"]
-	path = src/operators
-	url = git@github.com:stark-os/dev_core_operators
 [submodule "src/heap"]
 	path = src/heap
 	url = git@github.com:stark-os/dev_core_heap

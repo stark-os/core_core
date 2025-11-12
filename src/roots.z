@@ -1,0 +1,11 @@
+//default dat itms
+cst null  = 0$ref
+cst false = `00
+cst true  = `01
+
+//default IO
+mod IO {
+	STDIN  = 0
+	STDOUT = 1
+	STDERR = 2
+}

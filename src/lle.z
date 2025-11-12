@@ -1,0 +1,17 @@
+// ---------------- DEFINITIONS ----------------
+
+//enabled
+#CFG LOW_LEVEL_ERROR {
+	mod LLE{
+
+		//err codes <<<<<<<<<<<<<<<<<<<<<<<<<< ENM
+		cst SUCCESS       = `00
+		cst FAILURE       = `01
+		cst OUT_OF_BOUNDS = `02
+		cst MEMORY        = `03
+		cst INTERNAL      = `04
+
+		//lle
+		err = ^.SUCCESS
+	}
+}

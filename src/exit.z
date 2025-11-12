@@ -1,0 +1,26 @@
+// ---------------- DEFINITIONS ----------------
+
+//exit
+mod Exit {
+	cst SUCCESS             =   0
+	cst FAILURE             =   1
+	cst SHELL_BUILTIN       =   2
+	cst EXECUTION_DENIED    = 126
+	cst CMD_NOT_FOUND       = 127
+	cst INVALID_EXIT_CODE   = 128
+	cst SIGINT              = 130
+	cst SIGKILL             = 137
+	cst SEG_FAULT           = 139
+	cst SIGTERM             = 143
+	cst SYSTEM_REFUSE_ALLOC = 144 //allocator related
+	cst SYSTEM_REFUSE_FREE  = 145 //allocator related
+	cst ILLEGAL_HEAP_RU8    = 146 //allocator related
+	cst ILLEGAL_HEAP_RU16   = 147 //allocator related
+	cst ILLEGAL_HEAP_RU32   = 148 //allocator related
+	cst ILLEGAL_HEAP_RU64   = 149 //allocator related
+	cst ILLEGAL_HEAP_WU8    = 150 //allocator related
+	cst ILLEGAL_HEAP_WU16   = 151 //allocator related
+	cst ILLEGAL_HEAP_WU32   = 152 //allocator related
+	cst ILLEGAL_HEAP_WU64   = 153 //allocator related
+	cst OUT_OF_RANGE        = 255
+}
